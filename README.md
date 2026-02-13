@@ -46,7 +46,6 @@ git clone https://github.com/merciaguimaraesQA/automacao-cypress-hub-integration
 
 npm install
 
-
 3. Executar Cypress
 
 npx cypress open
