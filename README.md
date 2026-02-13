@@ -1,4 +1,3 @@
-então deixo assim : 
 
 # Automação de Testes - Hub Integration (DealerNet)
 
