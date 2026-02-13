@@ -38,15 +38,15 @@ cypress.config.js
 
 ## Como executar o projeto
 
-1. Clonar repositório
+1- Clonar repositório
 
 git clone https://github.com/merciaguimaraesQA/automacao-cypress-hub-integration.git
 
-2. Instalar dependências
+2- Instalar dependências
 
 npm install
 
-3. Executar Cypress
+3- Executar Cypress
 
 npx cypress open
 
