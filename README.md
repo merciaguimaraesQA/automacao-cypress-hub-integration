@@ -42,6 +42,7 @@ cypress.config.js
 
 git clone https://github.com/merciaguimaraesQA/automacao-cypress-hub-integration.git
 
+
 **2- Instalar dependências
 
 npm install
