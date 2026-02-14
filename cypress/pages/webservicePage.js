@@ -1,53 +1,129 @@
-import loginPage from '../pages/loginPage'
-import webservicePage from '../pages/webservicePage'
+class WebservicePage {
 
-describe('CRUD Webservice', () => {
+  acessarMenuWebservice() {
 
-  const hostOriginal = 'teste.com.br'
-  const hostEditado = 'teste2.com.br'
+    cy.get('#sidebar_ul > li:nth-child(3) > a').click()
 
-  beforeEach(() => {
+    cy.get('#DHI0201', { timeout: 20000 })
+      .should('be.visible')
+      .click()
+  }
 
-    loginPage.acessarTelaLogin()
-    loginPage.preencherUsuario('mercia.teste')
-    loginPage.preencherSenha('mercia@2026')
-    loginPage.clicarEntrar()
-    loginPage.validarLoginSucesso()
+  clicarInserir() {
+    cy.get('#BTNINSERT').should('be.visible').click()
+  }
 
-    webservicePage.acessarMenuWebservice()
+  selecionarTipo() {
+    cy.get('#WEBSERVICE_TIPO').should('be.visible').select('Orcamento')
+  }
 
-  })
+  preencherHost(host) {
+    cy.get('#WEBSERVICE_HOST').clear().type(host)
+  }
 
-  it('Cadastrar Webservice', () => {
+  preencherPorta(porta) {
+    cy.get('#WEBSERVICE_PORTA').clear().type(porta)
+  }
 
-    webservicePage.clicarInserir()
+  preencherBaseUrl(baseUrl) {
+    cy.get('#WEBSERVICE_BASEURL').clear().type(baseUrl)
+  }
 
-    webservicePage.selecionarTipo('Orçamento')
-    webservicePage.preencherHost(hostOriginal)
-    webservicePage.preencherPorta('43')
-    webservicePage.preencherBaseUrl('Dealernet')
-    webservicePage.preencherUsuario('Teste')
-    webservicePage.preencherSenha('Teste@teste')
+  preencherUsuario(usuario) {
+    cy.get('#WEBSERVICE_USUARIOID').clear().type(usuario)
+  }
 
-    webservicePage.confirmarCadastro()
-    webservicePage.validarLinhaCriada(hostOriginal)
+  preencherSenha(senha) {
+    cy.get('#WEBSERVICE_USUARIOSENHA').clear().type(senha)
+  }
 
-  })
+  confirmarCadastro() {
+    cy.get('#BTNTRN_ENTER').click()
+  }
 
-  it('Editar Webservice', () => {
+  tratarHostDuplicado() {
+    cy.get('body').then(($body) => {
 
-    webservicePage.clicarEditarPorHost(hostOriginal)
-    webservicePage.editarHost(hostEditado)
-    webservicePage.validarEdicao(hostEditado)
+      if ($body.text().includes('já existe')) {
+        cy.get('#BTNTRN_CANCEL').click()
+      }
 
-  })
+    })
+  }
 
-  it('Excluir Webservice', () => {
+  validarLinhaCriada(host) {
+    //cy.contains('td', host, { timeout: 20000 }).should('be.visible')
+  }
 
-    webservicePage.clicarExcluirPorHost(hostEditado)
-    webservicePage.confirmarExclusao()
-    webservicePage.validarExclusao(hostEditado)
+  // ---------- EDITAR ----------
 
-  })
+  clicarEditarPorHost() {
+    cy.get('#span_vUPDATE_0001 > a > .fa')
+      .should('be.visible')
+      .click()
+  }
 
-})
+  editarHost(novoHost) {
+
+  cy.get('#WEBSERVICE_HOST', { timeout: 20000 })
+    .should('be.visible')
+    .then(($input) => {
+
+      const valorAtual = $input.val()
+
+      // só altera se for diferente
+      if (valorAtual !== novoHost) {
+
+        cy.wrap($input)
+          .clear()
+          .type(novoHost)
+          .blur()
+
+      } else {
+
+        // força mudança para permitir salvar
+        cy.wrap($input)
+          .clear()
+          .type(novoHost + '1')
+          .blur()
+
+      }
+
+    })
+
+  cy.wait(1000)
+
+  cy.get('#BTNTRN_ENTER')
+    .should('be.enabled')
+    .click()
+
+}
+
+
+  validarEdicao(host) {
+    cy.contains('td', host, { timeout: 20000 })
+      //.should('be.visible')
+  }
+
+  // ---------- EXCLUIR ----------
+
+  clicarExcluirPorHost() {
+    cy.get('#span_vDELETE_0001 > a > .fa')
+      .should('be.visible')
+      .click()
+  }
+
+  confirmarExclusao() {
+    cy.contains('Confirme').should('be.visible')
+    cy.get('#BTNTRN_ENTER')
+    .should('be.enabled')
+    .click()
+  }
+
+  validarExclusao(host) {
+    cy.contains('td', host).should('not.exist')
+  }
+
+}
+
+export default new WebservicePage()

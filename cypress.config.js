@@ -2,7 +2,7 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
   e2e: {
-    baseUrl: "https://conhecimento_hubintegration.dealernetworkflow.com.br",
+    baseUrl: "https://dealerhml3dhi.dealernetworkflow.com.br",
     chromeWebSecurity: false,
     setupNodeEvents(on, config) {
 
